@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef __XBOTCORE_ALL_H__
-#define __XBOTCORE_ALL_H__
+// #ifndef __XBOTCORE_ALL_H__
+// #define __XBOTCORE_ALL_H__
 
 #include <XBotCore-interfaces/IXBotChain.h>
 #include <XBotCore-interfaces/IXBotRobot.h>
@@ -29,4 +29,4 @@
 #include <XBotCore-interfaces/XBotSharedMemory.h>
 
 
-#endif
+// #endif
