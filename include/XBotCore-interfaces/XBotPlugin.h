@@ -28,11 +28,11 @@
 #ifndef __X_BOT_PLUGIN_HPP__
 #define __X_BOT_PLUGIN_HPP__
 
+#include <XBotCore-interfaces/All.h>
+#include <map>
+#include <vector>
 #include <memory>
-
-#include <XBotCore-interfaces/XBotCore.h>
-#include <XBotCore-interfaces/IXBotModel.h>
-#include <XBotCore-interfaces/IXBotRobot.h>
+#include <string>
 
 namespace XBot
 {

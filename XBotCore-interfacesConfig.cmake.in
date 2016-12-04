@@ -1,0 +1,13 @@
+set(XBotCore-interfaces_VERSION @XBotCore-interfaces_VERSION@)
+
+@PACKAGE_INIT@
+
+set_and_check(XBotCore-interfaces_INCLUDEDIR "@PACKAGE_XBotCore-interfaces_INCLUDEDIR@")
+
+if(NOT TARGET XBotCore-interfaces::XBotCore-interfaces)
+  include("${CMAKE_CURRENT_LIST_DIR}/XBotCore-interfacesTargets.cmake")
+endif()
+
+# Compatibility
+set(XBotCore-interfaces_LIBRARIES XBotCore-interfaces::XBotCore-interfaces)
+set(XBotCore-interfaces_INCLUDE_DIRS ${XBotCore-interfaces_INCLUDEDIR})

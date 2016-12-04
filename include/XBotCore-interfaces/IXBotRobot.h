@@ -29,6 +29,8 @@
 #define __I_X_BOT_ROBOT_H__
 
 #include <map>
+#include <vector>
+#include <memory>
 #include <string>
 
 namespace XBot

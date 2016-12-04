@@ -31,8 +31,6 @@ endif()
 # include 
 include_directories(include 
                     )
-                            
-
 
 # lib
 add_library(XBotCore-interfaces SHARED
