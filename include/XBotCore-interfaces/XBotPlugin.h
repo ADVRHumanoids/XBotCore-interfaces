@@ -54,6 +54,7 @@ public:
 
     virtual bool init(std::string name,
                       std::string path_to_config_file,
+                      XBot::SharedMemory::Ptr shared_memory,
                       std::shared_ptr<XBot::IXBotJoint> joint,
                       std::shared_ptr<XBot::IXBotModel> model, 
                       std::shared_ptr<XBot::IXBotChain> chain,
