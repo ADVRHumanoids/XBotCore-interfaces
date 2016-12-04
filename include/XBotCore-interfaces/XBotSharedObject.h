@@ -27,80 +27,94 @@
 
 namespace XBot {
  
-    template<typename T>
-    class SharedObject {
-        
-    public:
-        
-        
-        
-        SharedObject() {
-            _ptrptr = std::make_shared<std::shared_ptr<T>>();
-        }
+template<typename T>
+class SharedObject {
+    
+public:
+    
+    
+    
+    SharedObject();
+    
+    SharedObject(T* dynamically_allocated_object);
+    
+    void reset(T* dynamically_allocated_object);
+    
+    T& operator*();
+    const T& operator*() const;
+    
+    T* operator->();
+    const T* operator->() const;
+    
+    std::shared_ptr<T> get();
+    std::shared_ptr<const T> get() const;
+    
+    bool setValid();
+    
+    bool isValid() const;
+    bool isNull() const;
+    
+protected:
+    
+private:
+    
+    std::shared_ptr<std::shared_ptr<T>> _ptrptr;
+    bool _is_valid;
+    
+};
 
-        SharedObject(T* dynamically_allocated_object);
-        
-        void reset(T* dynamically_allocated_object);
-        
-        T& operator*();
-        const T& operator*() const;
-        
-        T* operator->();
-        const T* operator->() const;
-        
-        std::shared_ptr<T> get();
-        std::shared_ptr<const T> get() const;
-        
-        bool setValid();
-        
-        bool isValid() const;
-        bool isNull() const;
-        
-    protected:
-        
-    private:
-        
-        std::shared_ptr<std::shared_ptr<T>> _ptrptr;
-        bool _is_valid;
-        
-    };
- 
     
 template<typename T>
-SharedObject<T>::SharedObject(T* dynamically_allocated_object)
+SharedObject<T>::SharedObject():
+    _is_valid(false)
 {
+    _ptrptr = std::make_shared<std::shared_ptr<T>>();
+}
+
+template<typename T>
+SharedObject<T>::SharedObject(T* dynamically_allocated_object):
+    _is_valid(false)
+{
+    _ptrptr = std::make_shared<std::shared_ptr<T>>();
     *_ptrptr = std::shared_ptr<T>(dynamically_allocated_object);
 }
+
 template<typename T>
 void SharedObject<T>::reset(T* dynamically_allocated_object)
 {
     *_ptrptr = std::shared_ptr<T>(dynamically_allocated_object);
 }
+
 template<typename T>
 std::shared_ptr<const T> SharedObject<T>::get() const
 {
     return *_ptrptr;
 }
+
 template<typename T>
 std::shared_ptr<T> SharedObject<T>::get()
 {
     return *_ptrptr;
 }
+
 template<typename T>
 const T& SharedObject<T>::operator*() const
 {
     return **_ptrptr;
 }
+
 template<typename T>
 T& SharedObject<T>::operator*()
 {
     return **_ptrptr;
 }
+
 template<typename T>
 const T* SharedObject<T>::operator->() const
 {
     return _ptrptr->get();
 }
+
 template<typename T>
 T* SharedObject<T>::operator->()
 {
@@ -112,11 +126,13 @@ bool SharedObject<T>::isNull() const
 {
     return !*_ptrptr;
 }
+
 template<typename T>
 bool SharedObject<T>::isValid() const
 {
     return !isNull() && _is_valid;
 }
+
 template<typename T>
 bool SharedObject<T>::setValid()
 {

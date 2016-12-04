@@ -52,21 +52,21 @@ SharedObject<T> SharedMemory::advertise(const std::string& object_name)
     
     if( _map.count(object_name) > 0 ){
         
-        // If the required object exists, try to cast it to the required type T
+        // If the required shared object exists, try to cast it to the required type T
         try{
             sh_obj = boost::any_cast<SharedObject<T>>(_map.at(object_name));
         }
         catch(...){
-            // If not, return false and print an error
+            // If cast fails, print an error
             std::cerr << "ERROR in " << __func__ << "! Object " << object_name << " is not of type " << typeid(T).name() << "!" << std::endl;
             return sh_obj;
         }
         
-        // Cast was ok, return true
+        // Cast was ok, return shared object
         return sh_obj;
     }
     
-    // If the object does not exist, add and return the pointer
+    // If the object does not exist, add it and return the shared object
     _map[object_name] = boost::any(sh_obj);
     return sh_obj;
     
@@ -80,7 +80,7 @@ SharedObject<T> SharedMemory::get(const std::string& object_name)
     SharedObject<T> sh_obj;
     
     if( _map.count(object_name) == 0 ){
-        // If required object does not exist in the map, we create and return the shared object ptr
+        // If required object does not exist in the map, we create and return the shared object
         _map[object_name] = boost::any(sh_obj);
 	return sh_obj;
     }
@@ -90,12 +90,12 @@ SharedObject<T> SharedMemory::get(const std::string& object_name)
         sh_obj = boost::any_cast<SharedObject<T>>(_map.at(object_name));
     }
     catch(...){
-        // If not, 
+        // If not, error
         std::cerr << "ERROR in " << __func__ << "! Object " << object_name << " is not of type " << typeid(T).name() << "!" << std::endl;
         return sh_obj;
     }
     
-    // Cast went alright, return the pointer
+    // Cast went alright, return the shared object
     return sh_obj;
 }
 
