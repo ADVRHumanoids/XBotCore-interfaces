@@ -85,10 +85,11 @@ bool SharedMemory::get(std::string object_name, std::shared_ptr<const T>& object
         // If required object does not exist in the map, we create and return the pointer
         std::shared_ptr<T> ptr;
         _map[object_name] = boost::any(ptr);
+	object_ptr = ptr;
         return true;
     }
     
-    // If the required object exists, try to see if it can be cast to the required type T
+    // If the required object exists, check if it can be cast to the required type T
     try{
         object_ptr = boost::any_cast<std::shared_ptr<const T>>(_map.at(object_name));
     }
