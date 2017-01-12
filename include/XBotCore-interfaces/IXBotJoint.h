@@ -56,6 +56,8 @@ public:
     
     virtual bool get_temperature(int joint_id, uint16_t& temperature) = 0;
     
+    virtual bool get_gains(int joint_id, std::vector<uint16_t>& gain_vector) = 0;
+    
     virtual bool get_fault(int joint_id, uint16_t& fault) = 0;
     
     virtual bool get_rtt(int joint_id, uint16_t& rtt) = 0;
