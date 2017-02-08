@@ -26,11 +26,11 @@
 #endif
 
 
-#ifdef __XENO__
+// #ifdef __XENO__
     static const std::string pipe_prefix ( "/proc/xenomai/registry/rtipc/xddp/" );
-#else
-    static const std::string pipe_prefix ( "/tmp/" );
-#endif
+// #else
+//     static const std::string pipe_prefix ( "/tmp/" );
+// #endif
 
 namespace CentauroUDP {
     

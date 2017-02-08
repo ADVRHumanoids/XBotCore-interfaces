@@ -100,25 +100,45 @@ std::shared_ptr<T> SharedObject<T>::get()
 template<typename T>
 const T& SharedObject<T>::operator*() const
 {
-    return **_ptrptr;
+    if(!isNull()) {
+        return **_ptrptr;
+    }
+    else {
+        std::cerr << "ERROR in XBotSharedObject: the requested shared objected was not initialized. You must call the reset() on the XBotSharedObject." << std::endl;
+    }
 }
 
 template<typename T>
 T& SharedObject<T>::operator*()
 {
-    return **_ptrptr;
+    if(!isNull()) {
+        return **_ptrptr;
+    }
+    else {
+        std::cerr << "ERROR in XBotSharedObject: the requested shared objected was not initialized. You must call the reset() on the XBotSharedObject." << std::endl;
+    }
 }
 
 template<typename T>
 const T* SharedObject<T>::operator->() const
 {
-    return _ptrptr->get();
+    if(!isNull()) {
+        return _ptrptr->get();
+    }
+    else {
+        std::cerr << "ERROR in XBotSharedObject: the requested shared objected was not initialized. You must call the reset() on the XBotSharedObject." << std::endl;
+    }
 }
 
 template<typename T>
 T* SharedObject<T>::operator->()
 {
-    return _ptrptr->get();
+    if(!isNull()) {
+        return _ptrptr->get();
+    }
+    else {
+        std::cerr << "ERROR in XBotSharedObject: the requested shared objected was not initialized. You must call the reset() on the XBotSharedObject." << std::endl;
+    }
 }
 
 template<typename T>
