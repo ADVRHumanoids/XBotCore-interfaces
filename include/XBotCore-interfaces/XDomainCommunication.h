@@ -24,6 +24,38 @@
 
 namespace XBot {
 
+class Command {
+
+public:
+
+    Command(const std::string& string = "")
+    {
+        int str_end = std::min((int)string.length(), 40);
+        int i;
+        for( i = 0; i < str_end; i++ ){
+            char_array[i] = string[i];
+        }
+        char_array[i] = '\0';
+    }
+
+    std::string str() const
+    {
+        return std::string(char_array);
+    }
+
+    Command& operator=(const std::string& string)
+    {
+        *this = Command(string);
+        return *this;
+    }
+
+
+private:
+
+    char char_array[41];
+
+};
+
 template <typename DataType>
 class SubscriberRT {
 
@@ -102,4 +134,123 @@ private:
 
 
 }
+
+/* IMPLEMENTATION */
+
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <iostream>
+
+namespace XBot {
+
+template <typename DataType>
+PublisherNRT<DataType>::PublisherNRT(const std::string& socket_name): _fd(-1)
+{
+    init(socket_name);
+}
+
+template <typename DataType>
+PublisherNRT<DataType>::PublisherNRT(): _fd(-1)
+{
+
+}
+
+template <typename DataType>
+void PublisherNRT<DataType>::init(const std::string& socket_name)
+{
+    while( _fd < 0 ){
+        _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY);
+        std::cout << "Waiting for some RT subscriber to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
+        sleep(1);
+    }
+}
+
+template <typename DataType>
+void PublisherNRT<DataType>::write(const DataType& data)
+{
+    int bytes = ::write(_fd, (void *)(&data), sizeof(data));
+}
+
+template <typename DataType>
+void PublisherRT<DataType>::init(const std::string& socket_name)
+{
+    _pipe.init(socket_name);
+}
+
+template <typename DataType>
+PublisherRT<DataType>::PublisherRT(const std::string& socket_name)
+{
+    init(socket_name);
+}
+
+template <typename DataType>
+PublisherRT<DataType>::PublisherRT()
+{
+
+}
+
+template <typename DataType>
+void SubscriberNRT<DataType>::init(const std::string& socket_name)
+{
+    while( _fd < 0 ){
+        _fd = open((pipe_prefix + socket_name).c_str(), O_RDONLY);
+        std::cout << "Waiting for some RT publisher to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
+        sleep(1);
+    }
+}
+
+template <typename DataType>
+void PublisherRT<DataType>::write(const DataType& data)
+{
+    _pipe.xddp_write(data);
+}
+
+template <typename DataType>
+bool SubscriberNRT<DataType>::read(DataType& data)
+{
+    int bytes = ::read(_fd, (void *)&data, sizeof(data));
+    return bytes > 0;
+}
+
+
+template <typename DataType>
+SubscriberNRT<DataType>::SubscriberNRT(const std::string& socket_name): _fd(-1)
+{
+    init(socket_name);
+}
+
+template <typename DataType>
+SubscriberNRT<DataType>::SubscriberNRT(): _fd(-1)
+{
+
+}
+
+template <typename DataType>
+void SubscriberRT<DataType>::init(const std::string& socket_name)
+{
+    _pipe.init(socket_name);
+}
+
+template <typename DataType>
+bool SubscriberRT<DataType>::read(DataType& data)
+{
+    return _pipe.xddp_read(data) > 0;
+}
+
+template <typename DataType>
+SubscriberRT<DataType>::SubscriberRT(const std::string& socket_name)
+{
+    init(socket_name);
+}
+
+template <typename DataType>
+SubscriberRT<DataType>::SubscriberRT()
+{
+
+}
+
+
+
+}
+
 #endif
