@@ -82,10 +82,10 @@ void PublisherRT<DataType>::write(const DataType& data)
 }
 
 template <typename DataType>
-void SubscriberNRT<DataType>::read(DataType& data)
+bool SubscriberNRT<DataType>::read(DataType& data)
 {
-    int bytes = read(_fd, (void *)&_last_received_data, sizeof(_last_received_data));
-    data = _last_received_data;
+    int bytes = read(_fd, (void *)&data, sizeof(data));
+    return bytes > 0;
 }
 
 
@@ -108,10 +108,9 @@ void SubscriberRT<DataType>::init(const std::string& socket_name)
 }
 
 template <typename DataType>
-void SubscriberRT<DataType>::read(DataType& data)
+bool SubscriberRT<DataType>::read(DataType& data)
 {
-    _pipe.xddp_read(_last_received_data);
-    data = _last_received_data;
+    return _pipe.xddp_read(data) > 0;
 }
 
 template <typename DataType>

@@ -34,11 +34,10 @@ public:
 
     void init(const std::string& socket_name);
 
-    void read(DataType& data);
+    bool read(DataType& data);
 
 private:
 
-    DataType _last_received_data;
     XDDP_pipe _pipe;
 
 
@@ -73,11 +72,10 @@ public:
 
     void init(const std::string& socket_name);
 
-    void read(DataType& data);
+    bool read(DataType& data);
 
 private:
 
-    DataType _last_received_data;
     int _fd;
 
 
