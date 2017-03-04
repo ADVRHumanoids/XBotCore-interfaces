@@ -20,6 +20,7 @@
 #include <XBotCore-interfaces/XDomainCommunication.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <iostream>
 
 namespace XBot {
 
@@ -40,6 +41,8 @@ void PublisherNRT<DataType>::init(const std::string& socket_name)
 {
     while( _fd < 0 ){
         _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY);
+        std::cout << "Waiting for some RT subscriber to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
+        sleep(1);
     }
 }
 
@@ -72,6 +75,8 @@ void SubscriberNRT<DataType>::init(const std::string& socket_name)
 {
     while( _fd < 0 ){
         _fd = open((pipe_prefix + socket_name).c_str(), O_RDONLY);
+        std::cout << "Waiting for some RT publisher to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
+        sleep(1);
     }
 }
 
