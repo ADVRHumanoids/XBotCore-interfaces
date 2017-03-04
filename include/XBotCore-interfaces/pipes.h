@@ -14,6 +14,7 @@
 #else
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <fcntl.h>
 #endif
 
@@ -32,8 +33,8 @@
 //     static const std::string pipe_prefix ( "/tmp/" );
 // #endif
 
-namespace CentauroUDP {
-    
+namespace XBot{
+
     class XDDP_pipe {
 
     public:
@@ -41,7 +42,7 @@ namespace CentauroUDP {
         XDDP_pipe ( int _pool_size = 8192 ) : pool_size ( _pool_size ) { fd = 0; }
 
         int get_fd() { return fd; }
-        
+
         void init ( const std::string pipe_name ) {
 
         std::string pipe = pipe_prefix + pipe_name;
