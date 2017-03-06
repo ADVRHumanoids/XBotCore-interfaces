@@ -28,6 +28,11 @@
 #include <XBotCore-interfaces/XBotPlugin.h>
 #include <XBotCore-interfaces/XBotSharedMemory.h>
 #include <XBotCore-interfaces/XDomainCommunication.h>
+#include <XBotCore-interfaces/XBotPipes.h>
+#include <XBotCore-interfaces/XBotESC.h>
 
+#ifdef __XENO__
+#include <XBotCore-interfaces/XBotRT_ipc.h>
+#endif
 
 // #endif

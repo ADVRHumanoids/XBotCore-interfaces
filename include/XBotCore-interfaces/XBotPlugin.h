@@ -28,7 +28,14 @@
 #ifndef __X_BOT_PLUGIN_HPP__
 #define __X_BOT_PLUGIN_HPP__
 
-#include <XBotCore-interfaces/All.h>
+#include <XBotCore-interfaces/IXBotChain.h>
+#include <XBotCore-interfaces/IXBotJoint.h>
+#include <XBotCore-interfaces/IXBotModel.h>
+#include <XBotCore-interfaces/IXBotRobot.h>
+#include <XBotCore-interfaces/IXBotFT.h>
+#include <XBotCore-interfaces/XBotSharedMemory.h>
+#include <XBotCore-interfaces/XBotESC.h>
+
 #include <map>
 #include <vector>
 #include <memory>

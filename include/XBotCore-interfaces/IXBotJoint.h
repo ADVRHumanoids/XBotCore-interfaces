@@ -28,6 +28,11 @@
 #ifndef __I_X_BOT_JOINT_H__
 #define __I_X_BOT_JOINT_H__
 
+#include <map>
+#include <vector>
+#include <memory>
+#include <string>
+
 namespace XBot
 {
     class IXBotJoint;
