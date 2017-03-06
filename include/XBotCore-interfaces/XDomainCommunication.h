@@ -49,6 +49,10 @@ public:
         return *this;
     }
 
+    operator std::string()
+    {
+        return str();
+    }
 
 private:
 
