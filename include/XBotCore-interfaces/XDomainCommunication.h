@@ -20,7 +20,7 @@
 #ifndef __XBOTCORE_CROSS_DOMAIN_COMMUNICATION_H__
 #define __XBOTCORE_CROSS_DOMAIN_COMMUNICATION_H__
 
-#include <XBotCore-interfaces/pipes.h>
+#include <XBotCore-interfaces/XBotPipes.h>
 
 namespace XBot {
 
