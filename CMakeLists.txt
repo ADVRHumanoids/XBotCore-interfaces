@@ -27,14 +27,28 @@ else()
 endif()
 
 # find packages
+set(ENABLE_XENO CACHE BOOL "OFF")
+
+if ( ${ENABLE_XENO} )
+    find_package(Xenomai)
+    find_package(RTnet)
+endif()
 
 # include
 include_directories(include
                     )
 
+if ( Xenomai_FOUND )
+    set_xeno_flags(${LIB_NAME})
+    set(RT_LIB_SOURCES
+        src/XBotRT_ipc.cpp
+        )
+endif()
+
 # lib
 add_library(XBotCore-interfaces SHARED
     src/XBotPlugin.cpp
+    ${RT_LIB_SOURCES}
 )
 
 
