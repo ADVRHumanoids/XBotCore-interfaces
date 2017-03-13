@@ -83,6 +83,12 @@ protected:
     std::shared_ptr<XBot::IXBotRobot> get_xbotcore_robot();
     std::shared_ptr<XBot::IXBotFT>    get_xbotcore_ft();
     
+    void set_xbotcore_joint(std::shared_ptr<XBot::IXBotJoint> joint);
+    void set_xbotcore_model(std::shared_ptr<XBot::IXBotModel> model);
+    void set_xbotcore_chain(std::shared_ptr<XBot::IXBotChain> chain);
+    void set_xbotcore_robot(std::shared_ptr<XBot::IXBotRobot> robot);
+    void set_xbotcore_ft(std::shared_ptr<XBot::IXBotFT> ft);
+    
     
 private:
     
