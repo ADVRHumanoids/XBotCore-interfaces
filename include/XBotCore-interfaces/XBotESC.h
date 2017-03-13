@@ -89,6 +89,66 @@ struct sdo_info {
     uint16_t ctrl_status_cmd;
 };
 
+
+struct RobotState {
+                    
+    // TX  slave_input -- master output
+    struct pdo_tx {
+        double    pos_ref;      
+        double    vel_ref;    
+        double    tor_ref;    
+        double    gain_0;      
+        double    gain_1;     
+        double    gain_2;     
+        double    gain_3;     
+        double    gain_4;     
+        double    fault_ack;
+        double    ts;
+        double    op_idx_aux;  
+        double    aux;         
+
+    } RobotStateTX __attribute__ ( ( __packed__ ) ); 
+
+    // RX  slave_output -- master input
+    struct pdo_rx {
+        double    link_pos;          
+        double    motor_pos;         
+        double    link_vel;          
+        double    motor_vel;         
+        double    torque;            
+        double    temperature;       
+        double    fault;
+        double    rtt;               
+        double    op_idx_ack;        
+        double    aux;               
+
+    } RobotStateRX __attribute__ ( ( __packed__ ) ); 
+
+};
+
+struct RobotFT {
+    
+    // TX  slave_input -- master output
+    struct pdo_tx {
+        double    ts;
+        
+    }  __attribute__ ( ( __packed__ ) );
+
+    // RX  slave_output -- master input
+    struct pdo_rx {
+        double    force_X;            // N
+        double    force_Y;            // N
+        double    force_Z;            // N
+        double    torque_X;           // Nm
+        double    torque_Y;           // Nm
+        double    torque_Z;           // Nm
+        double    fault;
+        double    rtt;                // ns
+        
+    }  __attribute__ ( ( __packed__ ) );
+
+};
+
 }
 
 
