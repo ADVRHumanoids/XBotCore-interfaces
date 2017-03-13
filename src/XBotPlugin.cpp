@@ -32,5 +32,31 @@ XBotPlugin::~XBotPlugin()
 {
 
 }
+
+std::shared_ptr< XBot::IXBotJoint > XBotPlugin::get_xbotcore_joint()
+{
+    return _joint;
+}
+
+std::shared_ptr< XBot::IXBotChain > XBotPlugin::get_xbotcore_chain()
+{
+    return _chain;
+}
+
+std::shared_ptr< XBot::IXBotRobot > XBotPlugin::get_xbotcore_robot()
+{
+    return _robot;
+}
+
+std::shared_ptr< XBot::IXBotModel > XBotPlugin::get_xbotcore_model()
+{
+    return _model;
+}
+
+std::shared_ptr< XBot::IXBotFT > XBotPlugin::get_xbotcore_ft()
+{
+    return _ft;
+}
+
     
 }

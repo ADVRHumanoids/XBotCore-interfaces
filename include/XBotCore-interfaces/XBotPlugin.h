@@ -77,11 +77,20 @@ public:
     
 protected:
     
-    std::shared_ptr<XBot::IXBotJoint> joint;
-    std::shared_ptr<XBot::IXBotModel> model;
-    std::shared_ptr<XBot::IXBotChain> chain;
-    std::shared_ptr<XBot::IXBotRobot> robot;
-    std::shared_ptr<XBot::IXBotFT> ft;
+    std::shared_ptr<XBot::IXBotJoint> get_xbotcore_joint();
+    std::shared_ptr<XBot::IXBotModel> get_xbotcore_model();
+    std::shared_ptr<XBot::IXBotChain> get_xbotcore_chain();
+    std::shared_ptr<XBot::IXBotRobot> get_xbotcore_robot();
+    std::shared_ptr<XBot::IXBotFT>    get_xbotcore_ft();
+    
+    
+private:
+    
+    std::shared_ptr<XBot::IXBotJoint> _joint;
+    std::shared_ptr<XBot::IXBotModel> _model;
+    std::shared_ptr<XBot::IXBotChain> _chain;
+    std::shared_ptr<XBot::IXBotRobot> _robot;
+    std::shared_ptr<XBot::IXBotFT>    _ft;
 
 
 };
