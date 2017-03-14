@@ -28,6 +28,7 @@ endif()
 
 # find packages
 set(ENABLE_XENO CACHE BOOL "OFF")
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs)
 
 if ( ${ENABLE_XENO} )
     find_package(Xenomai)
@@ -36,6 +37,7 @@ endif()
 
 # include
 include_directories(include
+                    ${catkin_INCLUDE_DIRS}
                     )
 
 if ( Xenomai_FOUND )
