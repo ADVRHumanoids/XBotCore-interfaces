@@ -1,13 +1,14 @@
 #ifndef __SONO_LA_GUARDIA_DI_ROS_SERIALIZATION_H__
 #define __SONO_LA_GUARDIA_DI_ROS_SERIALIZATION_H__
 
+
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <array>
 
 namespace XBot {
 
-    template <typename RosMessageType, int MaxSizeBytes = 1024>
+    template <typename RosMessageType, int MaxSizeBytes = 4096>
     class RosMessageWrapper {
 
     public:
@@ -21,8 +22,14 @@ namespace XBot {
 
             /* If message exceeds buffer size, return */
             if( _serialization_length > MaxSizeBytes ){
+
                 _serialization_length = 0;
                 _is_valid = false;
+
+                std::cerr << "ERROR in " << __PRETTY_FUNCTION__ << "! Message length exceeds RosMessageWrapper max size \
+                (" << _serialization_length << " > " << MaxSizeBytes << ")! Set the second template parameter to a value \
+                greater than " << _serialization_length << ", and take care that on the other side of the pipe the same \
+                value is used!" << std::endl;
                 return false;
             }
 
@@ -37,13 +44,14 @@ namespace XBot {
         {
             if( !_is_valid ) return false;
 
-            // Fill buffer with a serialized UInt32
             ros::serialization::IStream stream(_bytes, _serialization_length);
             ros::serialization::Serializer<RosMessageType>::read(stream, msg);
 
             return true;
 
         }
+
+        int getMaxSize() { return MaxSizeBytes; }
 
 
 
