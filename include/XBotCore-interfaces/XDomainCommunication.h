@@ -197,7 +197,7 @@ template <typename DataType>
 void SubscriberNRT<DataType>::init(const std::string& socket_name)
 {
     while( _fd < 0 ){
-        _fd = open((pipe_prefix + socket_name).c_str(), O_RDONLY);
+        _fd = open((pipe_prefix + socket_name).c_str(), O_RDONLY | O_NONBLOCK);
         std::cout << "Waiting for some RT publisher to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
         sleep(1);
     }
@@ -212,8 +212,15 @@ void PublisherRT<DataType>::write(const DataType& data)
 template <typename DataType>
 bool SubscriberNRT<DataType>::read(DataType& data)
 {
-    int bytes = ::read(_fd, (void *)&data, sizeof(data));
-    return bytes > 0;
+    int bytes = 1;
+    bool success = false;
+
+    while( bytes > 0 ){
+        bytes = ::read(_fd, (void *)&data, sizeof(data));
+        success = success || bytes > 0;
+    }
+
+    return success;
 }
 
 
@@ -238,7 +245,15 @@ void SubscriberRT<DataType>::init(const std::string& socket_name)
 template <typename DataType>
 bool SubscriberRT<DataType>::read(DataType& data)
 {
-    return _pipe.xddp_read(data) > 0;
+    int bytes = 1;
+    bool success = false;
+
+    while( bytes > 0 ){
+        bytes = _pipe.xddp_read(data);
+        success = success || bytes > 0;
+    }
+
+    return success;
 }
 
 template <typename DataType>
