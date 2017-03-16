@@ -27,6 +27,7 @@
 #include <XBotCore-interfaces/IXBotFT.h>
 #include <XBotCore-interfaces/XBotPlugin.h>
 #include <XBotCore-interfaces/XBotSharedMemory.h>
+#include <XBotCore-interfaces/XBotSharedObject.h>
 #include <XBotCore-interfaces/XDomainCommunication.h>
 #include <XBotCore-interfaces/XBotPipes.h>
 #include <XBotCore-interfaces/XBotESC.h>
