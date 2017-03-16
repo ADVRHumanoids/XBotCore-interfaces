@@ -42,11 +42,11 @@ class XBot::IXBotFT
 
 public:   
     
-    virtual bool get_ft(int ft_id, std::vector<float>&  ft, int channels = 6) = 0;
+    virtual bool get_ft(int ft_id, std::vector<double>&  ft, int channels = 6) = 0;
         
-    virtual bool get_ft_fault(int ft_id, uint16_t& fault) = 0;
+    virtual bool get_ft_fault(int ft_id, double& fault) = 0;
     
-    virtual bool get_ft_rtt(int ft_id, uint16_t& rtt) = 0;
+    virtual bool get_ft_rtt(int ft_id, double& rtt) = 0;
     
     virtual ~IXBotFT() {
         printf("~IXBotFT()\n");

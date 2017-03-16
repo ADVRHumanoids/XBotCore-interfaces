@@ -49,45 +49,45 @@ public:
 
     // TBD can be auto-generated based on the RX PDO
     // NOTE getters
-    virtual bool get_link_pos(int joint_id, float& link_pos) = 0;
+    virtual bool get_link_pos(int joint_id, double& link_pos) = 0;
     
-    virtual bool get_motor_pos(int joint_id, float& motor_pos) = 0;
+    virtual bool get_motor_pos(int joint_id, double& motor_pos) = 0;
     
-    virtual bool get_link_vel(int joint_id, int16_t& link_vel) = 0;
+    virtual bool get_link_vel(int joint_id, double& link_vel) = 0;
     
-    virtual bool get_motor_vel(int joint_id, int16_t& motor_vel) = 0;
+    virtual bool get_motor_vel(int joint_id, double& motor_vel) = 0;
     
-    virtual bool get_torque(int joint_id, float& torque) = 0;
+    virtual bool get_torque(int joint_id, double& torque) = 0;
     
-    virtual bool get_temperature(int joint_id, uint16_t& temperature) = 0;
+    virtual bool get_temperature(int joint_id, double& temperature) = 0;
     
-    virtual bool get_gains(int joint_id, std::vector<uint16_t>& gain_vector) = 0;
+    virtual bool get_gains(int joint_id, std::vector<double>& gain_vector) = 0;
     
-    virtual bool get_fault(int joint_id, uint16_t& fault) = 0;
+    virtual bool get_fault(int joint_id, double& fault) = 0;
     
-    virtual bool get_rtt(int joint_id, uint16_t& rtt) = 0;
+    virtual bool get_rtt(int joint_id, double& rtt) = 0;
     
-    virtual bool get_op_idx_ack(int joint_id, uint16_t& op_idx_ack) = 0;
+    virtual bool get_op_idx_ack(int joint_id, double& op_idx_ack) = 0;
     
-    virtual bool get_aux(int joint_id, float& aux) = 0;
+    virtual bool get_aux(int joint_id, double& aux) = 0;
     
     // TBD can be auto-generated based on the TX PDO
     // NOTE setters
-    virtual bool set_pos_ref(int joint_id, const float& pos_ref) = 0;
+    virtual bool set_pos_ref(int joint_id, const double& pos_ref) = 0;
     
-    virtual bool set_vel_ref(int joint_id, const int16_t& vel_ref) = 0;
+    virtual bool set_vel_ref(int joint_id, const double& vel_ref) = 0;
     
-    virtual bool set_tor_ref(int joint_id, const int16_t& tor_ref) = 0;
+    virtual bool set_tor_ref(int joint_id, const double& tor_ref) = 0;
     
-    virtual bool set_gains(int joint_id, const std::vector<uint16_t>&) = 0;
+    virtual bool set_gains(int joint_id, const std::vector<double>&) = 0;
     
-    virtual bool set_fault_ack(int joint_id, const int16_t& fault_ack) = 0;
+    virtual bool set_fault_ack(int joint_id, const double& fault_ack) = 0;
     
-    virtual bool set_ts(int joint_id, const uint16_t& ts) = 0;
+    virtual bool set_ts(int joint_id, const double& ts) = 0;
     
-    virtual bool set_op_idx_aux(int joint_id, const uint16_t& op_idx_aux) = 0;
+    virtual bool set_op_idx_aux(int joint_id, const double& op_idx_aux) = 0;
     
-    virtual bool set_aux(int joint_id, const float& aux) = 0;
+    virtual bool set_aux(int joint_id, const double& aux) = 0;
     
     
     virtual ~IXBotJoint() {
