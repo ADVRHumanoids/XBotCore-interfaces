@@ -21,6 +21,8 @@
 #define __X_BOT_PIPES_H__
 
 #include <string>
+#include <memory>
+#include <iostream>
 
 #ifdef __XENO__
 #include <XBotCore-interfaces/rt_ipc.h>
@@ -57,6 +59,8 @@ namespace XBot{
     class XDDP_pipe {
 
     public:
+        
+        typedef std::shared_ptr<XDDP_pipe> Ptr;
 
         /**
          * @brief XDDP pipe constructor
@@ -97,9 +101,13 @@ namespace XBot{
          * 
          */
         virtual ~XDDP_pipe() {
-            if ( ! fd ) {
+            
+            
+            if ( fd == 0 ) {
                 return;
             }
+            
+            std::cout << "Closing socket fd " << fd << std::endl;
 
             close ( fd );
     #ifndef __XENO__
@@ -174,6 +182,10 @@ namespace XBot{
             return read ( fd, (void*)buffer, size );
     #endif
         }
+        
+        XDDP_pipe& operator=(const XDDP_pipe&) = delete;
+        XDDP_pipe(const XDDP_pipe&) = delete;
+        
 
     protected:
         std::string pipe_name;

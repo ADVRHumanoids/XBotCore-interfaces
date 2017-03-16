@@ -74,7 +74,7 @@ public:
 
 private:
 
-    XDDP_pipe _pipe;
+    XDDP_pipe::Ptr _pipe;
 
 
 };
@@ -93,7 +93,7 @@ public:
 
 private:
 
-    XDDP_pipe _pipe;
+    XDDP_pipe::Ptr _pipe;
 
 
 };
@@ -163,9 +163,11 @@ template <typename DataType>
 void PublisherNRT<DataType>::init(const std::string& socket_name)
 {
     while( _fd < 0 ){
-        _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY);
+        _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY | O_NONBLOCK);
         std::cout << "Waiting for some RT subscriber to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
-        sleep(1);
+//         perror("ERROR open: ");
+        if(_fd < 0)
+            sleep(1);
     }
 }
 
@@ -178,19 +180,20 @@ void PublisherNRT<DataType>::write(const DataType& data)
 template <typename DataType>
 void PublisherRT<DataType>::init(const std::string& socket_name)
 {
-    _pipe.init(socket_name);
+    _pipe->init(socket_name);
 }
 
 template <typename DataType>
 PublisherRT<DataType>::PublisherRT(const std::string& socket_name)
 {
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
     init(socket_name);
 }
 
 template <typename DataType>
 PublisherRT<DataType>::PublisherRT()
 {
-
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
 }
 
 template <typename DataType>
@@ -199,14 +202,15 @@ void SubscriberNRT<DataType>::init(const std::string& socket_name)
     while( _fd < 0 ){
         _fd = open((pipe_prefix + socket_name).c_str(), O_RDONLY | O_NONBLOCK);
         std::cout << "Waiting for some RT publisher to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
-        sleep(1);
+        if(_fd < 0)
+            sleep(1);
     }
 }
 
 template <typename DataType>
 void PublisherRT<DataType>::write(const DataType& data)
 {
-    _pipe.xddp_write(data);
+    _pipe->xddp_write(data);
 }
 
 template <typename DataType>
@@ -239,7 +243,7 @@ SubscriberNRT<DataType>::SubscriberNRT(): _fd(-1)
 template <typename DataType>
 void SubscriberRT<DataType>::init(const std::string& socket_name)
 {
-    _pipe.init(socket_name);
+    _pipe->init(socket_name);
 }
 
 template <typename DataType>
@@ -249,7 +253,7 @@ bool SubscriberRT<DataType>::read(DataType& data)
     bool success = false;
 
     while( bytes > 0 ){
-        bytes = _pipe.xddp_read(data);
+        bytes = _pipe->xddp_read(data);
         success = success || bytes > 0;
     }
 
@@ -259,13 +263,14 @@ bool SubscriberRT<DataType>::read(DataType& data)
 template <typename DataType>
 SubscriberRT<DataType>::SubscriberRT(const std::string& socket_name)
 {
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
     init(socket_name);
 }
 
 template <typename DataType>
 SubscriberRT<DataType>::SubscriberRT()
 {
-
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
 }
 
 
