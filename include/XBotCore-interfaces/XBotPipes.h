@@ -25,7 +25,7 @@
 #include <iostream>
 
 #ifdef __XENO__
-#include <XBotCore-interfaces/rt_ipc.h>
+#include <XBotCore-interfaces/XBotRT_ipc.h>
 #else
 #include <sys/types.h>
 #include <sys/stat.h>
