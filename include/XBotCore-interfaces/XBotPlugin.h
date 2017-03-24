@@ -28,10 +28,8 @@
 #ifndef __X_BOT_PLUGIN_HPP__
 #define __X_BOT_PLUGIN_HPP__
 
-#include <XBotCore-interfaces/IXBotChain.h>
 #include <XBotCore-interfaces/IXBotJoint.h>
 #include <XBotCore-interfaces/IXBotModel.h>
-#include <XBotCore-interfaces/IXBotRobot.h>
 #include <XBotCore-interfaces/IXBotFT.h>
 #include <XBotCore-interfaces/XBotSharedMemory.h>
 #include <XBotCore-interfaces/XBotESC.h>
@@ -64,8 +62,6 @@ public:
                       XBot::SharedMemory::Ptr shared_memory,
                       std::shared_ptr<XBot::IXBotJoint> joint,
                       std::shared_ptr<XBot::IXBotModel> model, 
-                      std::shared_ptr<XBot::IXBotChain> chain,
-                      std::shared_ptr<XBot::IXBotRobot> robot,
                       std::shared_ptr<XBot::IXBotFT> ft) = 0;
                       
     virtual void run(double time, double period) = 0;
@@ -79,14 +75,10 @@ protected:
     
     std::shared_ptr<XBot::IXBotJoint> get_xbotcore_joint();
     std::shared_ptr<XBot::IXBotModel> get_xbotcore_model();
-    std::shared_ptr<XBot::IXBotChain> get_xbotcore_chain();
-    std::shared_ptr<XBot::IXBotRobot> get_xbotcore_robot();
     std::shared_ptr<XBot::IXBotFT>    get_xbotcore_ft();
     
     void set_xbotcore_joint(std::shared_ptr<XBot::IXBotJoint> joint);
     void set_xbotcore_model(std::shared_ptr<XBot::IXBotModel> model);
-    void set_xbotcore_chain(std::shared_ptr<XBot::IXBotChain> chain);
-    void set_xbotcore_robot(std::shared_ptr<XBot::IXBotRobot> robot);
     void set_xbotcore_ft(std::shared_ptr<XBot::IXBotFT> ft);
     
     
@@ -94,8 +86,6 @@ private:
     
     std::shared_ptr<XBot::IXBotJoint> _joint;
     std::shared_ptr<XBot::IXBotModel> _model;
-    std::shared_ptr<XBot::IXBotChain> _chain;
-    std::shared_ptr<XBot::IXBotRobot> _robot;
     std::shared_ptr<XBot::IXBotFT>    _ft;
 
 
