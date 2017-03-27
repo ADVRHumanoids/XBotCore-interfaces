@@ -29,18 +29,12 @@
 #else
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #endif
 
-#ifdef __XENO__
-    #include <rtdk.h>
-    #define DPRINTF rt_printf
-#else
-    #include <stdio.h>
-    #define DPRINTF printf
-#endif
+#include <unistd.h>
 
+#include <XCM/XBotUtils.h>
 
 #ifdef __XENO__
     static const std::string pipe_prefix ( "/proc/xenomai/registry/rtipc/xddp/" );
