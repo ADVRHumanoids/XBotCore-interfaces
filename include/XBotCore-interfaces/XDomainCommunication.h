@@ -165,7 +165,7 @@ void PublisherNRT<DataType>::init(const std::string& socket_name)
     while( _fd < 0 ){
         _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY | O_NONBLOCK);
         std::cout << "Waiting for some RT subscriber to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
-//         perror("ERROR open: ");
+        perror("ERROR open: ");
         if(_fd < 0)
             sleep(1);
     }
