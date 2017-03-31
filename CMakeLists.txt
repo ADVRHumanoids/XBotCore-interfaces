@@ -39,7 +39,6 @@ include_directories(include
                     )
 
 if ( Xenomai_FOUND )
-    set_xeno_flags(${LIB_NAME})
     set(RT_LIB_SOURCES
         src/XBotRT_ipc.cpp
         )
@@ -50,6 +49,10 @@ add_library(XBotCore-interfaces SHARED
     src/XBotPlugin.cpp
     ${RT_LIB_SOURCES}
 )
+
+if ( Xenomai_FOUND )
+    set_xeno_flags(XBotCore-interfaces)
+endif()
 
 
 ########################################################################
