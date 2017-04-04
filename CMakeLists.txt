@@ -14,7 +14,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(MacroOptionalBuild)
 
 
-# C++11 
+# C++11
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
 check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
@@ -26,16 +26,33 @@ else()
     message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-# find packages 
+# find packages
+set(ENABLE_XENO CACHE BOOL "OFF")
 
-# include 
-include_directories(include 
+if ( ${ENABLE_XENO} )
+    find_package(Xenomai)
+    find_package(RTnet)
+endif()
+
+# include
+include_directories(include
                     )
+
+if ( Xenomai_FOUND )
+    set(RT_LIB_SOURCES
+        src/XBotRT_ipc.cpp
+        )
+endif()
 
 # lib
 add_library(XBotCore-interfaces SHARED
     src/XBotPlugin.cpp
+    ${RT_LIB_SOURCES}
 )
+
+if ( Xenomai_FOUND )
+    set_xeno_flags(XBotCore-interfaces)
+endif()
 
 
 ########################################################################
@@ -78,6 +95,6 @@ install_basic_package_files(${PROJECT_NAME} VARS_PREFIX ${VARS_PREFIX}
                                     VERSION ${${VARS_PREFIX}_VERSION}
                                     COMPATIBILITY SameMajorVersion
                                     TARGETS_PROPERTY ${VARS_PREFIX}_TARGETS
-                                    NO_CHECK_REQUIRED_COMPONENTS_MACRO)                                    
+                                    NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
 include(AddUninstallTarget)

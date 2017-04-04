@@ -17,16 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-// #ifndef __XBOTCORE_ALL_H__
-// #define __XBOTCORE_ALL_H__
+#ifndef __XBOTCORE_ALL_H__
+#define __XBOTCORE_ALL_H__
 
-#include <XBotCore-interfaces/IXBotChain.h>
-#include <XBotCore-interfaces/IXBotRobot.h>
 #include <XBotCore-interfaces/IXBotModel.h>
 #include <XBotCore-interfaces/IXBotJoint.h>
 #include <XBotCore-interfaces/IXBotFT.h>
 #include <XBotCore-interfaces/XBotPlugin.h>
 #include <XBotCore-interfaces/XBotSharedMemory.h>
+#include <XBotCore-interfaces/XBotSharedObject.h>
+#include <XBotCore-interfaces/XDomainCommunication.h>
+#include <XBotCore-interfaces/XBotPipes.h>
+#include <XBotCore-interfaces/XBotESC.h>
 
+#ifdef __XENO__
+#include <XBotCore-interfaces/XBotRT_ipc.h>
+#endif
 
-// #endif
+#endif

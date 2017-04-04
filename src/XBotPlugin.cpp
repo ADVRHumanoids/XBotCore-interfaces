@@ -32,5 +32,37 @@ XBotPlugin::~XBotPlugin()
 {
 
 }
+
+std::shared_ptr< XBot::IXBotJoint > XBotPlugin::get_xbotcore_joint()
+{
+    return _joint;
+}
+
+std::shared_ptr< XBot::IXBotModel > XBotPlugin::get_xbotcore_model()
+{
+    return _model;
+}
+
+std::shared_ptr< XBot::IXBotFT > XBotPlugin::get_xbotcore_ft()
+{
+    return _ft;
+}
+
+void XBotPlugin::set_xbotcore_joint(std::shared_ptr< XBot::IXBotJoint > joint)
+{
+    _joint = joint;
+}
+
+void XBotPlugin::set_xbotcore_model(std::shared_ptr< XBot::IXBotModel > model)
+{
+    _model = model;
+}
+
+void XBotPlugin::set_xbotcore_ft(std::shared_ptr< XBot::IXBotFT > ft)
+{
+    _ft = ft;
+}
+
+
     
 }
