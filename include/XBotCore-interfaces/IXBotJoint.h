@@ -72,11 +72,11 @@ public:
     virtual bool get_aux(int joint_id, double& aux) = 0;
     
     // NOTE TX getters
-    virtual bool get_pos_ref(int joint_id, double& pos_ref);
+    virtual bool get_pos_ref(int joint_id, double& pos_ref) {};
     
-    virtual bool get_vel_ref(int joint_id, double& vel_ref);
+    virtual bool get_vel_ref(int joint_id, double& vel_ref) {};
     
-    virtual bool get_tor_ref(int joint_id, double& tor_ref);
+    virtual bool get_tor_ref(int joint_id, double& tor_ref) {};
     
     // TBD can be auto-generated based on the TX PDO
     // NOTE setters
