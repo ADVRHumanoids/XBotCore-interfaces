@@ -23,7 +23,7 @@
 #include <XBotCore-interfaces/XBotSharedObject.h>
 
 namespace XBot {
- 
+
     class SharedMemory {
 
     public:
@@ -44,14 +44,14 @@ namespace XBot {
 
     };
 
-    
+
 template <typename T>
 SharedObject<T> SharedMemory::advertise(const std::string& object_name)
 {
     SharedObject<T> sh_obj;
-    
+
     if( _map.count(object_name) > 0 ){
-        
+
         // If the required shared object exists, try to cast it to the required type T
         try{
             sh_obj = boost::any_cast<SharedObject<T>>(_map.at(object_name));
@@ -61,30 +61,32 @@ SharedObject<T> SharedMemory::advertise(const std::string& object_name)
             std::cerr << "ERROR in " << __func__ << "! Object " << object_name << " is not of type " << typeid(T).name() << "!" << std::endl;
             return sh_obj;
         }
-        
+
         // Cast was ok, return shared object
         return sh_obj;
     }
-    
+
     // If the object does not exist, add it and return the shared object
+    sh_obj.reset(new T);
     _map[object_name] = boost::any(sh_obj);
     return sh_obj;
-    
-    
+
+
 }
 
 template <typename T>
 SharedObject<T> SharedMemory::get(const std::string& object_name)
 {
-    
+
     SharedObject<T> sh_obj;
-    
+
     if( _map.count(object_name) == 0 ){
         // If required object does not exist in the map, we create and return the shared object
+        sh_obj.reset(new T);
         _map[object_name] = boost::any(sh_obj);
 	return sh_obj;
     }
-    
+
     // If the required object exists, check if it can be cast to the required type T
     try{
         sh_obj = boost::any_cast<SharedObject<T>>(_map.at(object_name));
@@ -94,14 +96,14 @@ SharedObject<T> SharedMemory::get(const std::string& object_name)
         std::cerr << "ERROR in " << __func__ << "! Object " << object_name << " is not of type " << typeid(T).name() << "!" << std::endl;
         return sh_obj;
     }
-    
+
     // Cast went alright, return the shared object
     return sh_obj;
 }
 
 
 
-    
+
 }
 
 #endif
