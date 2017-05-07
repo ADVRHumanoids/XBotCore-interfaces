@@ -132,7 +132,7 @@ struct RobotFT {
     struct pdo_tx {
         double    ts;
         
-    }  __attribute__ ( ( __packed__ ) );
+    } FTTX __attribute__ ( ( __packed__ ) );
 
     // RX  slave_output -- master input
     struct pdo_rx {
@@ -145,7 +145,7 @@ struct RobotFT {
         double    fault;
         double    rtt;                // ns
         
-    }  __attribute__ ( ( __packed__ ) );
+    } FTRX __attribute__ ( ( __packed__ ) );
 
 };
 
