@@ -48,6 +48,12 @@ std::shared_ptr< XBot::IXBotFT > XBotPlugin::get_xbotcore_ft()
     return _ft;
 }
 
+std::shared_ptr< IXBotIMU > XBotPlugin::get_xbotcore_imu()
+{
+    return _imu;
+}
+
+
 void XBotPlugin::set_xbotcore_joint(std::shared_ptr< XBot::IXBotJoint > joint)
 {
     _joint = joint;
@@ -61,6 +67,11 @@ void XBotPlugin::set_xbotcore_model(std::shared_ptr< XBot::IXBotModel > model)
 void XBotPlugin::set_xbotcore_ft(std::shared_ptr< XBot::IXBotFT > ft)
 {
     _ft = ft;
+}
+
+void XBotPlugin::set_xbotcore_imu(std::shared_ptr< IXBotIMU > imu)
+{
+    _imu = imu;
 }
 
 
