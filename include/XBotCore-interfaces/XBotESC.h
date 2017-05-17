@@ -83,6 +83,39 @@ struct Ft6EscPdoTypes {
 
 };
 
+struct ImuEscPdoTypes {
+
+    // TX  slave_input -- master output
+    struct pdo_tx {
+        uint16_t    fault_ack;
+        uint16_t    digital_out;
+        uint16_t    ts;
+    } __attribute__ ( ( __packed__ ) );
+
+    // RX  slave_output -- master input
+    struct pdo_rx {
+        float       x_rate;       
+        float       y_rate;       
+        float       z_rate;       
+        float       x_acc;       
+        float       y_acc;       
+        float       z_acc;       
+        float       x_quat;       
+        float       y_quat;       
+        float       z_quat;       
+        float       w_quat;       
+        uint32_t    imu_ts;          
+        uint16_t    temperature;          
+        uint16_t    digital_in;          
+        uint16_t    fault;
+        uint16_t    rtt;                // us
+        
+     }  __attribute__ ( ( __packed__ ) );
+     
+};
+
+
+
 struct sdo_info {
     float min_pos;
     float max_pos;
@@ -146,6 +179,37 @@ struct RobotFT {
         double    rtt;                // ns
         
     } FTRX __attribute__ ( ( __packed__ ) );
+
+};
+
+struct RobotIMU {
+    
+    // TX  slave_input -- master output
+    struct pdo_tx {
+        double    fault_ack;
+        double    digital_out;
+        double    ts;
+    } IMUTX __attribute__ ( ( __packed__ ) );
+
+    // RX  slave_output -- master input
+    struct pdo_rx {
+        double       ang_vel_X;       
+        double       ang_vel_Y;       
+        double       ang_vel_Z;       
+        double       lin_acc_X;       
+        double       lin_acc_Y;       
+        double       lin_acc_Z;       
+        double       quat_X;       
+        double       quat_Y;       
+        double       quat_Z;       
+        double       quat_W;       
+        double       imu_ts;          
+        double       temperature;          
+        double       digital_in;          
+        double       fault;
+        double       rtt;                // us
+        
+    } IMURX __attribute__ ( ( __packed__ ) );
 
 };
 

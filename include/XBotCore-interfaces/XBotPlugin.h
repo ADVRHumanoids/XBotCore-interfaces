@@ -31,6 +31,7 @@
 #include <XBotCore-interfaces/IXBotJoint.h>
 #include <XBotCore-interfaces/IXBotModel.h>
 #include <XBotCore-interfaces/IXBotFT.h>
+#include <XBotCore-interfaces/IXBotIMU.h>
 #include <XBotCore-interfaces/XBotSharedMemory.h>
 #include <XBotCore-interfaces/XBotESC.h>
 
@@ -62,7 +63,8 @@ public:
                       XBot::SharedMemory::Ptr shared_memory,
                       std::shared_ptr<XBot::IXBotJoint> joint,
                       std::shared_ptr<XBot::IXBotModel> model, 
-                      std::shared_ptr<XBot::IXBotFT> ft) = 0;
+                      std::shared_ptr<XBot::IXBotFT> ft,
+                      std::shared_ptr<XBot::IXBotIMU> imu ) = 0;
                       
     virtual void run(double time, double period) = 0;
     
@@ -76,10 +78,12 @@ protected:
     std::shared_ptr<XBot::IXBotJoint> get_xbotcore_joint();
     std::shared_ptr<XBot::IXBotModel> get_xbotcore_model();
     std::shared_ptr<XBot::IXBotFT>    get_xbotcore_ft();
+    std::shared_ptr<XBot::IXBotIMU>   get_xbotcore_imu();
     
     void set_xbotcore_joint(std::shared_ptr<XBot::IXBotJoint> joint);
     void set_xbotcore_model(std::shared_ptr<XBot::IXBotModel> model);
     void set_xbotcore_ft(std::shared_ptr<XBot::IXBotFT> ft);
+    void set_xbotcore_imu(std::shared_ptr<XBot::IXBotIMU> imu);
     
     
 private:
@@ -87,7 +91,7 @@ private:
     std::shared_ptr<XBot::IXBotJoint> _joint;
     std::shared_ptr<XBot::IXBotModel> _model;
     std::shared_ptr<XBot::IXBotFT>    _ft;
-
+    std::shared_ptr<XBot::IXBotIMU>   _imu;
 
 };
 
