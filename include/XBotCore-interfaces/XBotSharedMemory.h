@@ -24,25 +24,33 @@
 
 namespace XBot {
 
-    class SharedMemory {
+/**
+* @brief SharedMemory provides a means for RT plugins to communicate with
+* each other in a fast way. SharedObjects are created by the get() method,
+* and provide access to the underlying objects via pointer semantics,
+* meaning that it provides access to the underlying shared object of type T
+* by the operator* and operator->. As the only requirement, types to be shared
+* over SharedMemory must be default-constuctible.
+*/
+class SharedMemory {
 
-    public:
+public:
 
-        typedef std::shared_ptr<SharedMemory> Ptr;
+    typedef std::shared_ptr<SharedMemory> Ptr;
 
-        template <typename T>
-        SharedObject<T> advertise(const std::string& object_name);
+    template <typename T>
+    SharedObject<T> advertise(const std::string& object_name);
 
-        template <typename T>
-        SharedObject<T> get(const std::string& object_name);
+    template <typename T>
+    SharedObject<T> get(const std::string& object_name);
 
-    protected:
+protected:
 
-    private:
+private:
 
-        std::unordered_map<std::string, boost::any> _map;
+    std::unordered_map<std::string, boost::any> _map;
 
-    };
+};
 
 
 template <typename T>
@@ -74,6 +82,18 @@ SharedObject<T> SharedMemory::advertise(const std::string& object_name)
 
 }
 
+
+/**
+ * @brief This method returns a SharedObject<T> which is linked to the provided object_name.
+ * The SharedObject has pointer semantics, meaning that it provides access to the underlying
+ * shared object of type T by the operator* and operator->. If a shared object with the provided
+ * name does not exist, it is created and constructed with its default constructor.
+ *
+ * @Requirement: T must be default-constructible
+ *
+ * @param object_name The name of the requested shared object.
+ * @return The requested SharedObject
+ */
 template <typename T>
 SharedObject<T> SharedMemory::get(const std::string& object_name)
 {

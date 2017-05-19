@@ -24,6 +24,10 @@
 
 namespace XBot {
 
+/**
+* @brief Class which acts as a std::string of maximum length equal to 40
+* chars. It is commonly used to send textual commands over XDDP pipes.
+*/
 class Command {
 
 public:

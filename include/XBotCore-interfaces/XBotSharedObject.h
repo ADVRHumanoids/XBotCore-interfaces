@@ -26,44 +26,101 @@
 #include <iostream>
 
 namespace XBot {
- 
+
+/**
+* @brief SharedObjects is a wrapper around a double pointer, which is used to
+* share objects over a SharedMemory. SharedObjects provide access to the underlying
+* via pointer semantics, meaning that it provides access to the underlying shared object of type T
+* by the operator* and operator->.
+*
+*/
 template<typename T>
 class SharedObject {
-    
+
 public:
-    
-    
-    
+
+
+
     SharedObject();
-    
+
     SharedObject(T* dynamically_allocated_object);
-    
+
+    /**
+     * @brief Resets the SharedObject with a dynamically-allocated one, provided as an argument.
+     * SharedObject class must take the ownership of the provided pointer, meaning that the caller
+     * must NOT call delete on it. The recomended way of calling reset is
+     *
+     * reset( new T(args...) );
+     *
+     * @param dynamically_allocated_object A pointer to an object of type T, obtained via a call to new.
+     * @return void
+     */
     void reset(T* dynamically_allocated_object);
-    
+
+    /**
+     * @brief Pointer-like operator*, which gives R/W access to the underlying shared object.
+     *
+     * @return A reference to the underlying object.
+     */
     T& operator*();
+
+    /**
+     * @brief Pointer-like operator*, which gives read access to the underlying shared object.
+     *
+     * @return A const reference to the underlying object.
+     */
     const T& operator*() const;
-    
+
+    /**
+     * @brief Pointer-link operator->(), used to access underlying object methods.
+     *
+     */
     T* operator->();
+
+    /**
+     * @brief Pointer-link operator->(), used to access underlying object methods.
+     *
+     */
     const T* operator->() const;
-    
+
+    /**
+     * @brief Gets a shared pointer to the underlying object.
+     */
     std::shared_ptr<T> get();
+
+    /**
+     * @brief Gets a shared pointer to the underlying object.
+     */
     std::shared_ptr<const T> get() const;
-    
+
+    /**
+     * @brief Set the SharedObject in a valid state, meaning that meaningful
+     * information is present in it. The validity of a SharedObject can be
+     * checked by calling isValid()
+     *
+     */
     bool setValid();
-    
+
+    /**
+     * @brief Check if SharedObject was set in a valid state.
+     */
     bool isValid() const;
+
+    /**
+     * @brief Check if the SharedObject is null.
+     */
     bool isNull() const;
-    
+
 protected:
-    
+
 private:
-    
+
     std::shared_ptr<std::shared_ptr<T>> _ptrptr;
     bool _is_valid;
-    
+
 };
 
-    
+
 template<typename T>
 SharedObject<T>::SharedObject():
     _is_valid(false)
