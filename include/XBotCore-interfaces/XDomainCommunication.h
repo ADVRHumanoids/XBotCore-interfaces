@@ -65,16 +65,50 @@ private:
 };
 
 template <typename DataType>
-class SubscriberRT {
+class Subscriber {
+
+public:
+    
+    Subscriber();
+    explicit Subscriber(const std::string& socket_name);
+
+    virtual void init(const std::string& socket_name) = 0;
+
+    virtual bool read(DataType& data) = 0;
+
+protected:
+    
+    std::string _name;
+};
+
+template <typename DataType>
+class Publisher {
+
+public:
+
+    Publisher();
+    explicit Publisher(const std::string& socket_name);
+
+    virtual void init(const std::string& socket_name) = 0;
+
+    virtual void write(const DataType& data) = 0;
+
+protected:
+    
+    std::string _name;
+};
+
+template <typename DataType>
+class SubscriberRT : public Subscriber<DataType> {
 
 public:
 
     SubscriberRT();
     explicit SubscriberRT(const std::string& socket_name);
 
-    void init(const std::string& socket_name);
+    virtual void init(const std::string& socket_name);
 
-    bool read(DataType& data);
+    virtual bool read(DataType& data);
 
 private:
 
@@ -84,16 +118,16 @@ private:
 };
 
 template <typename DataType>
-class PublisherRT {
+class PublisherRT : public Publisher<DataType> {
 
 public:
 
     PublisherRT();
     explicit PublisherRT(const std::string& socket_name);
 
-    void init(const std::string& socket_name);
+    virtual void init(const std::string& socket_name);
 
-    void write(const DataType& data);
+    virtual void write(const DataType& data);
 
 private:
 
@@ -103,16 +137,16 @@ private:
 };
 
 template <typename DataType>
-class SubscriberNRT {
+class SubscriberNRT : public Subscriber<DataType>  {
 
 public:
 
     SubscriberNRT();
     explicit SubscriberNRT(const std::string& socket_name);
 
-    void init(const std::string& socket_name);
+    virtual void init(const std::string& socket_name);
 
-    bool read(DataType& data);
+    virtual bool read(DataType& data);
 
 private:
 
@@ -122,16 +156,16 @@ private:
 };
 
 template <typename DataType>
-class PublisherNRT {
+class PublisherNRT : public Publisher<DataType> {
 
 public:
 
     PublisherNRT();
     explicit PublisherNRT(const std::string& socket_name);
 
-    void init(const std::string& socket_name);
+    virtual void init(const std::string& socket_name);
 
-    void write(const DataType& data);
+    virtual void write(const DataType& data);
 
 private:
 
@@ -151,16 +185,20 @@ private:
 
 namespace XBot {
 
+    
 template <typename DataType>
-PublisherNRT<DataType>::PublisherNRT(const std::string& socket_name): _fd(-1)
+PublisherNRT<DataType>::PublisherNRT() : 
+    _fd(-1)
 {
-    init(socket_name);
+
 }
 
 template <typename DataType>
-PublisherNRT<DataType>::PublisherNRT(): _fd(-1)
+PublisherNRT<DataType>::PublisherNRT(const std::string& socket_name) : 
+    _fd(-1),
+    Publisher<DataType>(socket_name)
 {
-
+    init(socket_name);
 }
 
 template <typename DataType>
@@ -169,7 +207,7 @@ void PublisherNRT<DataType>::init(const std::string& socket_name)
     while( _fd < 0 ){
         _fd = open((pipe_prefix + socket_name).c_str(), O_WRONLY | O_NONBLOCK);
         std::cout << "Waiting for some RT subscriber to create pipe " << pipe_prefix+socket_name << "..." << std::endl;
-        perror("Open: ");
+//         perror("Open: ");
         if(_fd < 0)
             sleep(1);
     }
@@ -181,6 +219,22 @@ void PublisherNRT<DataType>::write(const DataType& data)
     int bytes = ::write(_fd, (void *)(&data), sizeof(data));
 }
 
+
+
+template <typename DataType>
+PublisherRT<DataType>::PublisherRT()
+{
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
+}
+
+template <typename DataType>
+PublisherRT<DataType>::PublisherRT(const std::string& socket_name) : 
+    Publisher<DataType>(socket_name)
+{
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
+    init(socket_name);
+}
+
 template <typename DataType>
 void PublisherRT<DataType>::init(const std::string& socket_name)
 {
@@ -188,16 +242,26 @@ void PublisherRT<DataType>::init(const std::string& socket_name)
 }
 
 template <typename DataType>
-PublisherRT<DataType>::PublisherRT(const std::string& socket_name)
+void PublisherRT<DataType>::write(const DataType& data)
 {
-    _pipe = std::make_shared<XBot::XDDP_pipe>();
-    init(socket_name);
+    _pipe->xddp_write(data);
+}
+
+
+
+template <typename DataType>
+SubscriberNRT<DataType>::SubscriberNRT() : 
+    _fd(-1)
+{
+
 }
 
 template <typename DataType>
-PublisherRT<DataType>::PublisherRT()
+SubscriberNRT<DataType>::SubscriberNRT(const std::string& socket_name) : 
+    _fd(-1),
+    Subscriber<DataType>(socket_name)
 {
-    _pipe = std::make_shared<XBot::XDDP_pipe>();
+    init(socket_name);
 }
 
 template <typename DataType>
@@ -209,12 +273,6 @@ void SubscriberNRT<DataType>::init(const std::string& socket_name)
         if(_fd < 0)
             sleep(1);
     }
-}
-
-template <typename DataType>
-void PublisherRT<DataType>::write(const DataType& data)
-{
-    _pipe->xddp_write(data);
 }
 
 template <typename DataType>
@@ -232,20 +290,23 @@ bool SubscriberNRT<DataType>::read(DataType& data)
 }
 
 
+
 template <typename DataType>
-SubscriberNRT<DataType>::SubscriberNRT(const std::string& socket_name): _fd(-1)
+SubscriberRT<DataType>::SubscriberRT()
 {
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
+}
+
+template <typename DataType>
+SubscriberRT<DataType>::SubscriberRT(const std::string& socket_name) : 
+    Subscriber<DataType>(socket_name)
+{
+    _pipe = std::make_shared<XBot::XDDP_pipe>();
     init(socket_name);
 }
 
 template <typename DataType>
-SubscriberNRT<DataType>::SubscriberNRT(): _fd(-1)
-{
-
-}
-
-template <typename DataType>
-void SubscriberRT<DataType>::init(const std::string& socket_name)
+void SubscriberRT<DataType>::init(const std::string& socket_name) 
 {
     _pipe->init(socket_name);
 }
@@ -264,18 +325,37 @@ bool SubscriberRT<DataType>::read(DataType& data)
     return success;
 }
 
+
+
+
 template <typename DataType>
-SubscriberRT<DataType>::SubscriberRT(const std::string& socket_name)
+Subscriber<DataType>::Subscriber() : 
+    _name("")
 {
-    _pipe = std::make_shared<XBot::XDDP_pipe>();
-    init(socket_name);
+
 }
 
 template <typename DataType>
-SubscriberRT<DataType>::SubscriberRT()
+Subscriber<DataType>::Subscriber(const std::string& socket_name) : 
+    _name(socket_name)
 {
-    _pipe = std::make_shared<XBot::XDDP_pipe>();
+
 }
+
+template <typename DataType>
+Publisher<DataType>::Publisher() : 
+    _name("")
+{
+
+}
+
+template <typename DataType>
+Publisher<DataType>::Publisher(const std::string& socket_name) : 
+    _name(socket_name)
+{
+
+}
+
 
 
 
